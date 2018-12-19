@@ -1,0 +1,41 @@
+class Api::BlogsController < ApplicationController
+  before_action :set_blog, only: [:show, :update, :destroy]
+
+  def index
+    render json: Blog
+  end
+
+  def show
+    render json: @blog
+  end
+
+  def new
+    blog = Blog.create(blog_params)
+    if blog.save
+      render json: blog
+    else
+      render json: {errors: blog.errors}
+    end
+  end
+
+  def update
+    if @blog.update
+      render json: @blog
+    else
+      render json: {errors: @blog.errors}
+    end
+  end
+
+  def destroy
+    @blog.destroy
+  end
+
+  private
+    def set_blog
+      @blog = Blog.find(params[:id])
+    end
+
+    def blog_params
+      params.require(:blog).permit(:name, :body)
+    end
+end
