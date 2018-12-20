@@ -1,8 +1,18 @@
-  
-const blogs = ( state = [], action ) => {
+import axios from 'axios';
+
+const BLOGS = 'BLOGS'
+
+export const getBlogs = () => {
+  return (dispatch) => {
+    axios.get('/api/blogs')
+    .then(res => dispatch({ type: BLOGS, blogs: res.data}))
+  }
+}
+
+export default ( state = [], action ) => {
   switch(action.type) {
-    case 'BlOGS':
-      return action.blogs
+    case BLOGS:
+    return action.blogs
     case 'ADD_BLOG':
       return [action.blog, ...state];
     case 'DELETE':
@@ -13,5 +23,3 @@ const blogs = ( state = [], action ) => {
       return state
   }
 }
-
-export default blogs;

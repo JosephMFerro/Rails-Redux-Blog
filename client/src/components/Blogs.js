@@ -2,21 +2,35 @@ import React from 'react';
 import Blog from './Blog';
 import { connect, } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { getBlogs } from '../reducers/blogs';
+import { Header, Button, } from 'semantic-ui-react';
+import { isPrimitive } from 'util';
 
-const Blogs = ({ blogs }) => {
-  return (
-    <div>
-      <h2>Blogs</h2>
-      <hr />
-      <Link to = "/blogform">Add a Blog</Link>
-      <ul>
-        {blogs.map(blog => (
-         <Blog key={blog.id} {...blog} />
-        ))}
-      </ul>
-    </div>
-  )
+class Blogs extends React.Component {
+
+  componentDidMount() {
+    this.props.dispatch(getBlogs())
+  }
+  
+  render() {
+    return (
+      <div>
+        <br />
+        <Header as = 'h2' align = 'center'>Blogs</Header>
+        <hr />
+        <Link to = "/blogform">
+          <Button>Add Blog</Button>
+        </Link>
+        <ul>
+          {this.props.blogs.map(blog => (
+           <Blog key={blog.id} {...blog} />
+          ))}
+        </ul>
+      </div>
+    )
+  }
 }
+
 
 const mapStateToProps = (state) => {
   return { blogs: state.blogs, };
